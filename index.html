@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>日本自由行行程指南 | Japan Travel Guide</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- QRCode.js CDN for live QR code generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Noto Sans TC & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            jp: {
+              red: '#BC002D',
+              sakura: '#FFEAEF',
+              accent: '#E05D5D',
+              dark: '#1C1917',
+              sand: '#F7F6F3',
+              stone: '#78716C'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans TC"', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom subtle scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F7F6F3;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D6D3D1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #A8A29E;
+    }
+    .badge-blur {
+      backdrop-filter: blur(8px);
+    }
+  </style>
+</head>
+<body class="bg-jp-sand text-stone-800 font-sans antialiased min-h-screen pb-24 md:pb-12">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm transition-all duration-300">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-jp-red animate-pulse"></span>
+        <span id="navTripTitle" class="font-bold text-stone-900 tracking-wide text-sm md:text-base">東京賞楓 & 美食自由行</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <button id="btnShareQR" class="flex items-center gap-1.5 px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-full text-xs font-medium transition active:scale-95">
+          <i data-lucide="qr-code" class="w-4 h-4 text-stone-700"></i>
+          <span>團員 QR</span>
+        </button>
+        <button id="btnToggleEdit" class="flex items-center gap-1.5 px-3 py-1.5 bg-jp-red/10 hover:bg-jp-red/20 text-jp-red rounded-full text-xs font-medium transition active:scale-95">
+          <i data-lucide="edit-3" class="w-4 h-4"></i>
+          <span id="editBtnText">編輯模式</span>
+        </button>
+      </div>
+    </div>
+    <!-- Quick category anchors -->
+    <nav class="max-w-4xl mx-auto px-4 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs font-medium border-t border-stone-100">
+      <a href="#overview" class="whitespace-nowrap px-3 py-1 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200">行前總覽</a>
+      <a href="#traffic" class="whitespace-nowrap px-3 py-1 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200">航班列車</a>
+      <a href="#itinerary" class="whitespace-nowrap px-3 py-1 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200">每日行程</a>
+      <a href="#spots" class="whitespace-nowrap px-3 py-1 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200">景點餐廳官網</a>
+      <a href="#tips" class="whitespace-nowrap px-3 py-1 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200">行前清單</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="overview" class="relative overflow-hidden bg-gradient-to-b from-jp-sakura/60 via-jp-sand to-jp-sand pt-8 pb-10 px-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center gap-2 text-xs font-semibold text-jp-red tracking-wider uppercase mb-2">
+        <span class="inline-block px-2 py-0.5 rounded bg-white/80 shadow-xs border border-jp-red/20">Japan Travel</span>
+        <span id="displayGroupCount" class="text-stone-500">同行團員：4 人</span>
+      </div>
+      <h1 id="heroTitle" class="text-2xl md:text-4xl font-extrabold text-stone-900 tracking-tight leading-tight">
+        2026 日本關東 5 天 4 夜探索之旅
+      </h1>
+      <p id="heroDates" class="mt-2 text-sm md:text-base text-stone-600 flex items-center gap-2">
+        <i data-lucide="calendar" class="w-4 h-4 text-jp-accent"></i>
+        <span>2026/10/14 (三) ~ 2026/10/18 (日)</span>
+      </p>
+
+      <!-- Key Info Summary Cards -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+        <div class="bg-white p-3.5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <p class="text-xs text-stone-400 font-medium">主要城市</p>
+          <p id="infoCity" class="text-sm md:text-base font-bold text-stone-800 mt-1">東京 • 鎌倉 • 富士</p>
+        </div>
+        <div class="bg-white p-3.5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <p class="text-xs text-stone-400 font-medium">去程航班</p>
+          <p id="infoFlightGo" class="text-sm md:text-base font-bold text-stone-800 mt-1">JX800 08:30 TPE</p>
+        </div>
+        <div class="bg-white p-3.5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <p class="text-xs text-stone-400 font-medium">下榻飯店</p>
+          <p id="infoHotel" class="text-sm md:text-base font-bold text-stone-800 mt-1">新宿格拉斯麗酒店</p>
+        </div>
+        <div class="bg-white p-3.5 rounded-2xl border border-stone-200/80 shadow-xs">
+          <p class="text-xs text-stone-400 font-medium">緊急聯絡</p>
+          <p id="infoContact" class="text-sm md:text-base font-bold text-stone-800 mt-1">+886 912-345-678</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="max-w-4xl mx-auto px-4 space-y-12">
+
+    <!-- Traffic: Flights & Rail -->
+    <section id="traffic" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-xl bg-blue-50 text-blue-600">
+            <i data-lucide="plane" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-stone-900">主要交通與時刻表</h2>
+            <p class="text-xs text-stone-500">飛機起降時間、航廈及新幹線指定席</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <!-- Flight 1: Go -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-xs relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-bl-lg">
+            去程航班
+          </div>
+          <div class="flex items-center justify-between text-xs text-stone-400 font-medium pb-2 border-b border-stone-100">
+            <span id="flightGoAirline">星宇航空 JX800</span>
+            <span id="flightGoDate">2026/10/14 (三)</span>
+          </div>
+          <div class="flex items-center justify-between my-4">
+            <div class="text-center">
+              <span class="text-xl md:text-2xl font-bold text-stone-900 block" id="flightGoDepTime">08:30</span>
+              <span class="text-xs font-medium text-stone-500" id="flightGoDepLoc">台北桃園 (TPE) T1</span>
+            </div>
+            <div class="flex flex-col items-center px-4">
+              <span class="text-[11px] text-stone-400">約 3 小時 15 分</span>
+              <div class="w-20 md:w-28 h-0.5 bg-stone-300 relative my-1">
+                <i data-lucide="plane" class="w-3.5 h-3.5 text-blue-600 absolute -top-1.5 left-1/2 transform -translate-x-1/2"></i>
+              </div>
+              <span class="text-[10px] text-emerald-600 font-semibold">準點率高</span>
+            </div>
+            <div class="text-center">
+              <span class="text-xl md:text-2xl font-bold text-stone-900 block" id="flightGoArrTime">12:45</span>
+              <span class="text-xs font-medium text-stone-500" id="flightGoArrLoc">東京成田 (NRT) T2</span>
+            </div>
+          </div>
+          <div class="bg-stone-50 rounded-xl p-2.5 text-xs text-stone-600 flex justify-between items-center">
+            <span>託運行李：<strong>23kg x 2件</strong></span>
+            <span>登機門：以當日公佈為準</span>
+          </div>
+        </div>
+
+        <!-- Flight 2: Return -->
+        <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-xs relative overflow-hidden">
+          <div class="absolute top-0 right-0 bg-stone-700 text-white text-[10px] font-bold px-2.5 py-1 rounded-bl-lg">
+            回程航班
+          </div>
+          <div class="flex items-center justify-between text-xs text-stone-400 font-medium pb-2 border-b border-stone-100">
+            <span id="flightBackAirline">星宇航空 JX801</span>
+            <span id="flightBackDate">2026/10/18 (日)</span>
+          </div>
+          <div class="flex items-center justify-between my-4">
+            <div class="text-center">
+              <span class="text-xl md:text-2xl font-bold text-stone-900 block" id="flightBackDepTime">14:00</span>
+              <span class="text-xs font-medium text-stone-500" id="flightBackDepLoc">東京成田 (NRT) T2</span>
+            </div>
+            <div class="flex flex-col items-center px-4">
+              <span class="text-[11px] text-stone-400">約 3 小時 40 分</span>
+              <div class="w-20 md:w-28 h-0.5 bg-stone-300 relative my-1">
+                <i data-lucide="plane" class="w-3.5 h-3.5 text-stone-700 absolute -top-1.5 left-1/2 transform -translate-x-1/2"></i>
+              </div>
+              <span class="text-[10px] text-stone-500 font-medium">起飛前 2.5h 抵達</span>
+            </div>
+            <div class="text-center">
+              <span class="text-xl md:text-2xl font-bold text-stone-900 block" id="flightBackArrTime">16:40</span>
+              <span class="text-xs font-medium text-stone-500" id="flightBackArrLoc">台北桃園 (TPE) T1</span>
+            </div>
+          </div>
+          <div class="bg-stone-50 rounded-xl p-2.5 text-xs text-stone-600 flex justify-between items-center">
+            <span>託運行李：<strong>23kg x 2件</strong></span>
+            <span>提早至機場免稅採購</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rail & Express Card -->
+      <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-xs">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="train" class="w-4 h-4 text-emerald-600"></i>
+            <h3 class="font-bold text-stone-800 text-sm">主要特急 / 機場快線 / 新幹線時刻</h3>
+          </div>
+          <span class="text-[11px] bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded-full font-medium">重要聯外鐵路</span>
+        </div>
+        <div class="space-y-2 text-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100 gap-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-stone-800">成田特快 N'EX 26號</span>
+              <span class="text-stone-500">成田機場 ➔ 新宿站</span>
+            </div>
+            <div class="flex items-center gap-3 text-stone-600">
+              <span>發車 <strong>13:48</strong> ➔ 抵達 <strong>15:09</strong></span>
+              <span class="bg-white px-2 py-0.5 rounded border border-stone-200 text-stone-700">車廂 4 車 10A-10D</span>
+            </div>
+          </div>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between p-2.5 rounded-xl bg-stone-50 border border-stone-100 gap-1">
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-stone-800">富士回遊 7號 (Fuji Excursion)</span>
+              <span class="text-stone-500">新宿 ➔ 河口湖</span>
+            </div>
+            <div class="flex items-center gap-3 text-stone-600">
+              <span>發車 <strong>07:30</strong> ➔ 抵達 <strong>09:26</strong></span>
+              <span class="bg-white px-2 py-0.5 rounded border border-stone-200 text-stone-700">全車指定席</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Day-by-Day Itinerary Section -->
+    <section id="itinerary" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-xl bg-jp-sakura text-jp-red">
+            <i data-lucide="map-pin" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-stone-900">每日行程時間表</h2>
+            <p class="text-xs text-stone-500">點擊切換天數查看詳細規劃與行程安排</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day Selector Buttons -->
+      <div id="daySelectorContainer" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Day Details Card -->
+      <div class="bg-white rounded-2xl border border-stone-200 p-5 shadow-xs">
+        <div class="border-b border-stone-100 pb-3 mb-4 flex flex-wrap items-center justify-between gap-2">
+          <div>
+            <span id="activeDayTag" class="text-xs font-bold text-jp-red bg-jp-sakura px-2.5 py-1 rounded-full">Day 1</span>
+            <h3 id="activeDayTheme" class="text-base md:text-lg font-bold text-stone-900 mt-1">啟程東京・抵達成田 ➔ 新宿歌舞伎町夜遊</h3>
+          </div>
+          <span id="activeDayDate" class="text-xs text-stone-500 font-medium">2026/10/14 (三)</span>
+        </div>
+
+        <!-- Timeline container -->
+        <div id="timelineContainer" class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-stone-200">
+          <!-- Timeline items inserted by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Attractions & Dining with Official Links -->
+    <section id="spots" class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="p-2 rounded-xl bg-amber-50 text-amber-600">
+            <i data-lucide="compass" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-lg md:text-xl font-bold text-stone-900">精選景點與名店（官方網站）</h2>
+            <p class="text-xs text-stone-500">提供各景點與餐廳的官方預約與資訊連結</p>
+          </div>
+        </div>
+      </div>
+
+      <div id="spotsList" class="grid sm:grid-cols-2 gap-4">
+        <!-- Populated via JavaScript for easy editing -->
+      </div>
+    </section>
+
+    <!-- Travel Tips & Checklist -->
+    <section id="tips" class="space-y-4">
+      <div class="flex items-center gap-2">
+        <div class="p-2 rounded-xl bg-purple-50 text-purple-600">
+          <i data-lucide="check-circle" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h2 class="text-lg md:text-xl font-bold text-stone-900">行前提醒與必備工具</h2>
+          <p class="text-xs text-stone-500">確保同團每位成員都已做好以下準備</p>
+        </div>
+      </div>
+
+      <div class="grid sm:grid-cols-3 gap-3 text-xs">
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 font-bold text-stone-800 text-sm mb-1.5">
+              <i data-lucide="smartphone" class="w-4 h-4 text-jp-accent"></i>
+              Visit Japan Web
+            </div>
+            <p class="text-stone-600 leading-relaxed">抵達日本前 48 小時內完成入境與海關申報，獲取 QR Code 快速通關。</p>
+          </div>
+          <a href="https://vjw-lp.digital.go.jp/zh-hant/" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-1 font-semibold text-jp-red hover:underline">
+            前往官網申報 <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 font-bold text-stone-800 text-sm mb-1.5">
+              <i data-lucide="credit-card" class="w-4 h-4 text-emerald-600"></i>
+              交通卡 Suica / PASMO
+            </div>
+            <p class="text-stone-600 leading-relaxed">Apple 錢包可直接新增交通卡線上加值；地鐵、便利商店、自動販賣機皆可感應。</p>
+          </div>
+          <span class="mt-3 text-stone-400 font-medium text-[11px]">推薦使用手機感應乘車</span>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl border border-stone-200 shadow-xs flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 font-bold text-stone-800 text-sm mb-1.5">
+              <i data-lucide="wifi" class="w-4 h-4 text-blue-600"></i>
+              eSIM 網路設定
+            </div>
+            <p class="text-stone-600 leading-relaxed">出國前在台灣先掃描加入 eSIM，飛機降落成田機場後開啟行動數據與漫遊。</p>
+          </div>
+          <span class="mt-3 text-stone-400 font-medium text-[11px]">保持旅伴隨時聯繫</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t border-stone-200 bg-white py-8 text-center text-xs text-stone-500">
+    <div class="max-w-4xl mx-auto px-4 flex flex-col items-center gap-2">
+      <p class="font-medium text-stone-700">🇯🇵 祝旅程平安順利・收穫滿滿美好回憶！</p>
+      <p>由團員共享網頁直接瀏覽，隨時掌握交通與最新集合時間</p>
+    </div>
+  </footer>
+
+  <!-- QR Code Modal (for sharing with companions) -->
+  <div id="qrModal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full shadow-2xl text-center transform transition-all">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="font-bold text-base text-stone-900">分享此行程給團員</h3>
+        <button id="btnCloseQR" class="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <p class="text-xs text-stone-500 mb-4">請同團夥伴使用手機相機掃描下方 QR Code，即可直接打開此行程網頁！</p>
+      
+      <!-- QR code canvas container -->
+      <div class="flex justify-center p-4 bg-stone-50 rounded-2xl border border-stone-200 my-2">
+        <div id="qrcodeArea" class="w-[200px] h-[200px] flex items-center justify-center"></div>
+      </div>
+
+      <div class="mt-4 flex gap-2">
+        <button id="btnCopyUrl" class="w-full py-2.5 bg-jp-red text-white text-xs font-semibold rounded-xl hover:bg-jp-red/90 transition flex items-center justify-center gap-1.5 shadow-sm">
+          <i data-lucide="copy" class="w-4 h-4"></i>
+          <span id="copyUrlText">複製行程連結</span>
+        </button>
+      </div>
+      <p id="copyNotification" class="text-[11px] text-emerald-600 mt-2 font-medium opacity-0 transition-opacity">已成功複製連結！</p>
+    </div>
+  </div>
+
+  <!-- Edit Mode Modal -->
+  <div id="editModal" class="fixed inset-0 z-50 bg-stone-900/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-lg text-stone-900 flex items-center gap-2">
+          <i data-lucide="sliders" class="w-5 h-5 text-jp-red"></i>
+          自訂自由行內容
+        </h3>
+        <button id="btnCloseEdit" class="p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <p class="text-xs text-stone-500 mb-4">在這裡可以快速更新旅行標題、日期、航班代號與團員人數（資料將即時更新在網頁中）。</p>
+      
+      <form id="editForm" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">行程標題</label>
+          <input type="text" id="inputTitle" class="w-full px-3 py-2 border border-stone-300 rounded-xl focus:ring-2 focus:ring-jp-red focus:outline-none" value="2026 日本關東 5 天 4 夜探索之旅">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">日期區間</label>
+            <input type="text" id="inputDates" class="w-full px-3 py-2 border border-stone-300 rounded-xl focus:ring-2 focus:ring-jp-red focus:outline-none" value="2026/10/14 (三) ~ 2026/10/18 (日)">
+          </div>
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">同行人數</label>
+            <input type="text" id="inputCount" class="w-full px-3 py-2 border border-stone-300 rounded-xl focus:ring-2 focus:ring-jp-red focus:outline-none" value="4 人">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">去程航班代碼 & 時間</label>
+            <input type="text" id="inputFlightGo" class="w-full px-3 py-2 border border-stone-300 rounded-xl focus:ring-2 focus:ring-jp-red focus:outline-none" value="JX800 08:30 - 12:45">
+          </div>
+          <div>
+            <label class="block font-semibold text-stone-700 mb-1">回程航班代碼 & 時間</label>
+            <input type="text" id="inputFlightBack" class="w-full px-3 py-2 border border-stone-300 rounded-xl focus:ring-2 focus:ring-jp-red focus:outline-none" value="JX801 14:00 - 16:40">
+          </div>
+        </div>
+        <div>
+          <label class="block font-semibold text-stone-700 mb-1">下榻飯店名稱</label>
+          <input type="text" id="inputHotel" class="w-full px-3 py-2 border border-stone-300 rounded-xl focus:ring-2 focus:ring-jp-red focus:outline-none" value="新宿格拉斯麗酒店 (Hotel Gracery Shinjuku)">
+        </div>
+
+        <div class="pt-3 flex gap-2">
+          <button type="submit" class="flex-1 py-2.5 bg-jp-red text-white font-bold rounded-xl hover:bg-jp-red/90 transition shadow-sm">
+            儲存並套用
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Trip Data Structure
+    const itineraryData = [
+      {
+        day: 1,
+        date: "2026/10/14 (三)",
+        theme: "啟程東京・抵達成田 ➔ 新宿歌舞伎町夜遊",
+        schedule: [
+          { time: "06:00", title: "桃園機場第一航廈集合", desc: "星宇航空櫃檯辦理登機與託運，發放 WiFi / eSIM 並過安檢。", tag: "集合" },
+          { time: "08:30", title: "班機起飛 (JX800)", desc: "預計飛行 3 小時 15 分，享用機上餐食與填妥入境資料。", tag: "飛行" },
+          { time: "12:45", title: "抵達成田機場第二航廈", desc: "入境通關領取行李，前往 B1 領取 JR Pass 並搭乘成田特快 N'EX 26 號 (13:48 發)。", tag: "交通" },
+          { time: "15:20", title: "抵達新宿飯店 Check-in", desc: "前往「新宿格拉斯麗酒店」辦理入住手續，放行李稍作休息。", tag: "住宿" },
+          { time: "17:30", title: "新宿歌舞伎町 & 晚餐 (敘敘苑燒肉)", desc: "歌舞伎町塔巡禮，預約 18:30 敘敘苑燒肉享用頂級和牛，飯後新宿散策。", tag: "美食" }
+        ]
+      },
+      {
+        day: 2,
+        date: "2026/10/15 (四)",
+        theme: "傳統與現代交織：淺草雷門・晴空塔・秋葉原",
+        schedule: [
+          { time: "08:30", title: "飯店出發 ➔ 淺草寺雷門", desc: "搭乘都營新宿線轉淺草線，漫步仲見世通商店街，祈求旅途平安籤詩。", tag: "景點" },
+          { time: "11:30", title: "淺草今半 壽喜燒午餐", desc: "百年老店品嚐特選黑毛和牛壽喜燒定食（建議 11 點前抵達候位）。", tag: "美食" },
+          { time: "13:30", title: "東京晴空塔 (Tokyo Skytree)", desc: "登頂 350m 天望甲板與 450m 天望回廊，俯瞰東京都心全景，Solamachi 伴手禮街逛街。", tag: "景點" },
+          { time: "16:30", title: "秋葉原動漫電器街", desc: "探索動漫模型、Yodobashi-Akiba 大型電器行與扭蛋專門店。", tag: "逛街" },
+          { time: "19:00", title: "晚餐：秋葉原 牛かつ もと村 (炸牛排)", desc: "外酥內嫩的石板現煎炸牛排定食。", tag: "美食" }
+        ]
+      },
+      {
+        day: 3,
+        date: "2026/10/16 (五)",
+        theme: "富士山河口湖一日遊：天上山公園・大石公園・日歸溫泉",
+        schedule: [
+          { time: "07:00", title: "新宿站搭乘「富士回遊 7 號」", desc: "直達河口湖站 (07:30-09:26)，沿途窗景欣賞富士山美景。", tag: "交通" },
+          { time: "10:00", title: "河口湖天上山全景纜車", desc: "搭纜車登上天上面觀景台，敲響天上之鐘並遠眺富士山錐形壯麗美景。", tag: "景點" },
+          { time: "12:30", title: "午餐：ほうとう不動 (河口湖名物 餺飥麵)", desc: "手作厚切蔬菜南瓜味噌燉麵，熱騰騰風味絕佳。", tag: "美食" },
+          { time: "14:00", title: "大石公園 & 楓葉回廊散策", desc: "秋季掃帚草與紅葉回廊，絕美湖畔逆富士打卡取景點。", tag: "拍照" },
+          { time: "17:00", title: "富士急行 / 特急電車返回新宿", desc: "抵達新宿後自由活動或於飯店附近居酒屋小酌。", tag: "交通" }
+        ]
+      },
+      {
+        day: 4,
+        date: "2026/10/17 (六)",
+        theme: "湘南海岸・古都鎌倉・江之島夕陽散步",
+        schedule: [
+          { time: "08:30", title: "新宿出發 ➔ 鎌倉高校前", desc: "搭乘小田急江之島線轉江之電，於《灌籃高手》平交道打卡拍照（注意交通安全，切勿阻擋車道）。", tag: "景點" },
+          { time: "10:30", title: "高德院鎌倉大佛 & 長谷寺", desc: "參拜 11 公尺高的露天青銅釋迦牟尼佛，長谷寺觀賞日式庭園。", tag: "景點" },
+          { time: "12:30", title: "小町通商店街美食巡禮", desc: "享用吻仔魚丼飯、抹茶冰淇淋與日式炸可樂餅。", tag: "美食" },
+          { time: "15:30", title: "江之島海蠟燭展望燈塔 & 稚兒之淵", desc: "江之島神社洗錢祈福，於海崖邊守候夕陽富士山海景。", tag: "夕陽" },
+          { time: "19:30", title: "返回澀谷 ➔ 澀谷 Sky 展望台夜景", desc: "預約 20:00 頂樓 SHIBUYA SKY 360 度俯瞰澀谷十字路口夜景。", tag: "夜景" }
+        ]
+      },
+      {
+        day: 5,
+        date: "2026/10/18 (日)",
+        theme: "明治神宮祈福・表參道最後採購 ➔ 依依不捨前往成田返台",
+        schedule: [
+          { time: "09:00", title: "飯店退房 & 寄存行李", desc: "確認所有隨身物品、護照、退稅單據完備。", tag: "整理" },
+          { time: "09:30", title: "明治神宮森林森呼吸", desc: "原宿站出口，穿越巨大鳥居漫步蓊鬱森林林道，感受市區的寧靜洗禮。", tag: "景點" },
+          { time: "11:30", title: "HARBS 表參道店 / 輕食午餐", desc: "品嚐招牌千層水果蛋糕 (Mille Crepes) 與精緻甜點。", tag: "甜點" },
+          { time: "13:00", title: "返回飯店取行李 ➔ 前往成田機場", desc: "搭乘特快抵達成田機場 T2，辦理報到與託運。", tag: "交通" },
+          { time: "14:00", title: "班機登機返台 (JX801 14:00-16:40)", desc: "免稅店採買伴手禮 (東京芭娜娜、白色戀人、Royce生巧克力)，平安返家。", tag: "歸國" }
+        ]
+      }
+    ];
+
+    // Official Spots & Dining dataset with official URLs
+    const spotsData = [
+      {
+        title: "東京晴空塔 (Tokyo Skytree)",
+        category: "景點展望台",
+        desc: "世界第一高自立式電波塔，天望甲板可一覽東京大都會與富士山壯麗全景。",
+        officialUrl: "https://www.tokyo-skytree.jp/cn_t/",
+        mapUrl: "https://maps.google.com/?q=Tokyo+Skytree",
+        tips: "建議線上提前預購天望回廊套票，節省現場排隊時間。",
+        statusColor: "emerald"
+      },
+      {
+        title: "SHIBUYA SKY (澀谷天空)",
+        category: "熱門景點",
+        desc: "位於 Shibuya Scramble Square 頂樓，露天 360 度觀景平台，夕陽至夜景時段最受歡迎。",
+        officialUrl: "https://www.shibuya-scramble-square.com/sky/",
+        mapUrl: "https://maps.google.com/?q=SHIBUYA+SKY",
+        tips: "必須提前 4 週官網預約日落熱門場次！隨身包包需寄物。",
+        statusColor: "rose"
+      },
+      {
+        title: "敘敘苑燒肉 (新宿中央東口店)",
+        category: "精選燒肉",
+        desc: "日本指標性頂級燒肉餐廳，油花分布均勻的牛五花與特製醬汁堪稱一絕。",
+        officialUrl: "https://www.jojoen.co.jp/",
+        mapUrl: "https://maps.google.com/?q=Jojoen+Shinjuku",
+        tips: "商業午餐 CP 值極高，晚餐請務必先在官方網站完成訂位。",
+        statusColor: "amber"
+      },
+      {
+        title: "富士山河口湖全景纜車",
+        category: "近郊自然",
+        desc: "搭乘天上山纜車直達山頂，遠眺河口湖鏡面與雄偉富士山合影之絕佳角度。",
+        officialUrl: "https://www.mtfujiropeway.jp/",
+        mapUrl: "https://maps.google.com/?q=Mt.+Fuji+Panoramic+Ropeway",
+        tips: "清晨視野最清晰，順光能拍出無遮蔽的壯觀雪冠富士。",
+        statusColor: "blue"
+      },
+      {
+        title: "淺草今半 (百年壽喜燒)",
+        category: "百年老店",
+        desc: "創立於明治 28 年，傳統極致秘傳醬汁搭配頂級黑毛和牛與新鮮雞蛋。",
+        officialUrl: "https://www.asakusaimahan.co.jp/",
+        mapUrl: "https://maps.google.com/?q=Asakusa+Imahan",
+        tips: "每日限量午間和牛壽喜燒定食，開店前 20 分鐘抵達排隊最佳。",
+        statusColor: "amber"
+      },
+      {
+        title: "HARBS 蛋糕甜點店",
+        category: "下午茶甜點",
+        desc: "以層層新鮮當季水果與清爽手作卡士達鮮奶油堆疊的招牌 Mille Crepes 千層蛋糕。",
+        officialUrl: "https://www.harbs.co.jp/",
+        mapUrl: "https://maps.google.com/?q=HARBS+Omotesando",
+        tips: "店內內用規定每人需點一杯飲品低消，亦可選擇外帶。",
+        statusColor: "emerald"
+      }
+    ];
+
+    let currentDay = 1;
+
+    function init() {
+      renderDaySelectors();
+      renderTimeline(currentDay);
+      renderSpots();
+      setupEventListeners();
+      lucide.createIcons();
+    }
+
+    // Render Day Selector Tabs
+    function renderDaySelectors() {
+      const container = document.getElementById('daySelectorContainer');
+      container.innerHTML = itineraryData.map(d => `
+        <button onclick="selectDay(${d.day})" class="px-4 py-2 rounded-2xl text-xs font-bold transition flex flex-col items-center min-w-[90px] border ${
+          d.day === currentDay 
+          ? 'bg-jp-red text-white border-jp-red shadow-sm' 
+          : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-50'
+        }">
+          <span>Day ${d.day}</span>
+          <span class="text-[10px] font-normal opacity-80">${d.date.split(' ')[0].substring(5)}</span>
+        </button>
+      `).join('');
+    }
+
+    // Switch Selected Day
+    window.selectDay = function(dayNumber) {
+      currentDay = dayNumber;
+      renderDaySelectors();
+      renderTimeline(dayNumber);
+      lucide.createIcons();
+    }
+
+    // Render Timeline Content for selected day
+    function renderTimeline(dayNumber) {
+      const dayData = itineraryData.find(d => d.day === dayNumber);
+      if (!dayData) return;
+
+      document.getElementById('activeDayTag').textContent = `Day ${dayData.day}`;
+      document.getElementById('activeDayTheme').textContent = dayData.theme;
+      document.getElementById('activeDayDate').textContent = dayData.date;
+
+      const timelineContainer = document.getElementById('timelineContainer');
+      timelineContainer.innerHTML = dayData.schedule.map(item => `
+        <div class="relative group">
+          <!-- Dot indicator -->
+          <div class="absolute -left-[29px] top-1 w-3.5 h-3.5 rounded-full border-2 border-white bg-jp-accent shadow-xs group-hover:scale-125 transition-transform"></div>
+          
+          <div class="flex items-baseline gap-2">
+            <span class="font-bold text-sm text-jp-dark tracking-wide font-mono">${item.time}</span>
+            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-stone-100 text-stone-600">${item.tag}</span>
+          </div>
+          <h4 class="font-bold text-stone-900 text-sm mt-0.5">${item.title}</h4>
+          <p class="text-xs text-stone-500 mt-1 leading-relaxed">${item.desc}</p>
+        </div>
+      `).join('');
+    }
+
+    // Render Featured Spots with Official Websites
+    function renderSpots() {
+      const container = document.getElementById('spotsList');
+      container.innerHTML = spotsData.map(spot => `
+        <div class="bg-white rounded-2xl border border-stone-200 p-4 shadow-xs flex flex-col justify-between hover:border-stone-300 transition-all">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-stone-100 text-stone-700">${spot.category}</span>
+              <span class="text-[11px] text-amber-700 bg-amber-50 px-2 py-0.5 rounded font-medium">備註提醒</span>
+            </div>
+            <h3 class="font-bold text-stone-900 text-sm md:text-base">${spot.title}</h3>
+            <p class="text-xs text-stone-500 mt-1 line-clamp-2">${spot.desc}</p>
+            <div class="mt-2 text-[11px] text-stone-600 bg-stone-50 p-2 rounded-xl border border-stone-100 flex items-start gap-1">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-stone-400 mt-0.5 flex-shrink-0"></i>
+              <span>${spot.tips}</span>
+            </div>
+          </div>
+          <div class="mt-4 pt-3 border-t border-stone-100 flex items-center justify-between text-xs font-semibold">
+            <a href="${spot.mapUrl}" target="_blank" rel="noopener noreferrer" class="text-stone-500 hover:text-stone-900 flex items-center gap-1 transition">
+              <i data-lucide="map" class="w-3.5 h-3.5"></i> 地圖導航
+            </a>
+            <a href="${spot.officialUrl}" target="_blank" rel="noopener noreferrer" class="text-jp-red hover:underline flex items-center gap-1 transition font-bold">
+              <span>前往官方網站</span>
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+            </a>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Setup Modals and Event Listeners
+    function setupEventListeners() {
+      const qrModal = document.getElementById('qrModal');
+      const btnShareQR = document.getElementById('btnShareQR');
+      const btnCloseQR = document.getElementById('btnCloseQR');
+      const btnCopyUrl = document.getElementById('btnCopyUrl');
+      const qrcodeArea = document.getElementById('qrcodeArea');
+
+      // Edit Modal elements
+      const editModal = document.getElementById('editModal');
+      const btnToggleEdit = document.getElementById('btnToggleEdit');
+      const btnCloseEdit = document.getElementById('btnCloseEdit');
+      const editForm = document.getElementById('editForm');
+
+      // QR Code Generator
+      btnShareQR.addEventListener('click', () => {
+        qrModal.classList.remove('hidden');
+        qrcodeArea.innerHTML = '';
+        const currentUrl = window.location.href;
+        new QRCode(qrcodeArea, {
+          text: currentUrl,
+          width: 180,
+          height: 180,
+          colorDark: "#1C1917",
+          colorLight: "#FFFFFF",
+          correctLevel: QRCode.CorrectLevel.M
+        });
+      });
+
+      btnCloseQR.addEventListener('click', () => {
+        qrModal.classList.add('hidden');
+      });
+
+      qrModal.addEventListener('click', (e) => {
+        if (e.target === qrModal) qrModal.classList.add('hidden');
+      });
+
+      // Copy Link Helper
+      btnCopyUrl.addEventListener('click', () => {
+        const dummy = document.createElement('input');
+        document.body.appendChild(dummy);
+        dummy.value = window.location.href;
+        dummy.select();
+        document.execCommand('copy');
+        document.body.removeChild(dummy);
+
+        const notif = document.getElementById('copyNotification');
+        notif.classList.remove('opacity-0');
+        setTimeout(() => notif.classList.add('opacity-0'), 2500);
+      });
+
+      // Edit Mode Dialog
+      btnToggleEdit.addEventListener('click', () => {
+        editModal.classList.remove('hidden');
+      });
+
+      btnCloseEdit.addEventListener('click', () => {
+        editModal.classList.add('hidden');
+      });
+
+      editModal.addEventListener('click', (e) => {
+        if (e.target === editModal) editModal.classList.add('hidden');
+      });
+
+      // Handle Edit Submit
+      editForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const newTitle = document.getElementById('inputTitle').value;
+        const newDates = document.getElementById('inputDates').value;
+        const newCount = document.getElementById('inputCount').value;
+        const newHotel = document.getElementById('inputHotel').value;
+
+        if (newTitle) {
+          document.getElementById('heroTitle').textContent = newTitle;
+          document.getElementById('navTripTitle').textContent = newTitle;
+        }
+        if (newDates) {
+          document.getElementById('heroDates').innerHTML = `<i data-lucide="calendar" class="w-4 h-4 text-jp-accent"></i><span>${newDates}</span>`;
+        }
+        if (newCount) {
+          document.getElementById('displayGroupCount').textContent = `同行團員：${newCount}`;
+        }
+        if (newHotel) {
+          document.getElementById('infoHotel').textContent = newHotel;
+        }
+
+        lucide.createIcons();
+        editModal.classList.add('hidden');
+      });
+    }
+
+    // Start on DOM ready
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
