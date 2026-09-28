@@ -6,7 +6,7 @@
   <title>2027 日本雪季與關東近郊 10 天自由行</title>
   <!-- Google Fonts & Lucide Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest"></script>
   <!-- QRCode.js -->
@@ -119,7 +119,7 @@
       box-shadow: var(--shadow);
     }
 
-    /* Flight & Train Cards */
+    /* Transport Cards */
     .transport-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -202,31 +202,48 @@
       border-radius: 12px;
     }
 
-    /* Daily Itinerary Tabs */
+    /* Daily Itinerary Tabs (優化滑動與觸控體驗) */
     .day-selector {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       overflow-x: auto;
-      padding-bottom: 8px;
+      padding: 12px 6px 14px;
       margin-bottom: 16px;
-      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x;
     }
-    .day-selector::-webkit-scrollbar { display: none; }
+    .day-selector::-webkit-scrollbar {
+      height: 4px;
+    }
+    .day-selector::-webkit-scrollbar-thumb {
+      background: #d8d3cb;
+      border-radius: 4px;
+    }
     .day-pill {
       background: white;
       border: 1px solid var(--border);
-      padding: 8px 14px;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      padding: 10px 16px;
+      border-radius: 14px;
+      font-size: 0.88rem;
       white-space: nowrap;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      user-select: none;
+    }
+    .day-pill:active {
+      transform: scale(0.97);
     }
     .day-pill.active {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
       font-weight: 600;
+      box-shadow: 0 3px 8px rgba(201, 58, 64, 0.3);
     }
 
     /* Timeline */
@@ -363,9 +380,9 @@
 <body>
 
   <header>
-    <span class="badge">🎿 2027 萬座滑雪 × 草津溫泉 × 日光關東 10 日遊</span>
+    <span class="badge">🎿 萬座滑雪 × 草津名湯 × 日光關東 10 日遊</span>
     <h1>日本冬雪極致自由行</h1>
-    <p class="subtitle">2/20 (六) – 3/1 (一) ｜ 萬座粉雪・名湯療癒・歷史古都</p>
+    <p class="subtitle">2/20 (六) – 3/1 (一) ｜ 成田市區・萬座粉雪・草津溫泉・日光古都</p>
     
     <div class="top-actions">
       <button class="action-btn" onclick="openQRModal()">
@@ -381,7 +398,7 @@
 
     <!-- 航班與主要特急列車 -->
     <div class="section-title">
-      <i data-lucide="plane"></i> 航班與預約特急車次
+      <i data-lucide="plane"></i> 航班與預約交通車次
     </div>
     <div class="transport-grid">
       <!-- 去程航班 -->
@@ -396,7 +413,7 @@
             <div class="airport">高雄 KHH (或桃園)</div>
           </div>
           <div class="flight-arrow">
-            <span>約 3h 15m</span>
+            <span>3h 15m</span>
             <i data-lucide="arrow-right"></i>
           </div>
           <div class="flight-node">
@@ -405,7 +422,7 @@
           </div>
         </div>
         <div style="font-size:0.8rem; color:#888; margin-top:10px;">
-          *備註：出發地依團員各自高雄/桃園起飛，於成田機場接駁集合點會合。
+          *抵達後大行李可先寄放機場置物櫃，前往成田市區觀光。
         </div>
       </div>
 
@@ -421,7 +438,7 @@
             <div class="airport">成田 NRT T3</div>
           </div>
           <div class="flight-arrow">
-            <span>約 4h 00m</span>
+            <span>4h 00m</span>
             <i data-lucide="arrow-right"></i>
           </div>
           <div class="flight-node">
@@ -430,57 +447,57 @@
           </div>
         </div>
         <div style="font-size:0.8rem; color:#888; margin-top:10px;">
-          *早班機注意：當日住機場旁東橫INN，搭乘清晨免費接駁巴士提早2.5小時到航廈。
+          *早班機注意：當天住機場旁東橫INN，搭乘清晨免費接駁車提早 2.5 小時至航廈。
         </div>
       </div>
 
-      <!-- 日光特急 去程 -->
+      <!-- 滑雪接駁專車 -->
+      <div class="card train-card" style="border-left-color: #2b7a78;">
+        <div class="transport-header">
+          <span class="flight-no" style="color:#2b7a78;">滑雪中毒者 專車直達</span>
+          <span style="font-size:0.85rem; color:#6e6b66;">2/20 (六)</span>
+        </div>
+        <div class="flight-route">
+          <div class="flight-node">
+            <div class="time">17:50</div>
+            <div class="airport">成田機場 發車</div>
+          </div>
+          <div class="flight-arrow">
+            <span>專車直達</span>
+            <i data-lucide="arrow-right"></i>
+          </div>
+          <div class="flight-node">
+            <div class="time">約 22:30</div>
+            <div class="airport">萬座王子飯店</div>
+          </div>
+        </div>
+        <div style="font-size:0.8rem; color:#888; margin-top:10px;">
+          *請於 17:30 前返回成田機場指定接駁集合點會合。
+        </div>
+      </div>
+
+      <!-- 日光特急 來回 -->
       <div class="card train-card">
         <div class="transport-header">
-          <span class="flight-no" style="color:var(--primary);">東武 SPACIA X 1 號</span>
+          <span class="flight-no" style="color:var(--primary);">東武 SPACIA X (來回)</span>
           <span style="font-size:0.85rem; color:#6e6b66;">2/26 (五)</span>
         </div>
         <div class="flight-route">
           <div class="flight-node">
-            <div class="time">07:50</div>
-            <div class="airport">淺草站 出發</div>
+            <div class="time">07:50 淺草</div>
+            <div class="airport">SPACIA X 1 號</div>
           </div>
           <div class="flight-arrow">
-            <span>1h 49m</span>
-            <i data-lucide="arrow-right"></i>
+            <span>當日來回</span>
+            <i data-lucide="repeat"></i>
           </div>
           <div class="flight-node">
-            <div class="time">09:39</div>
-            <div class="airport">東武日光站 抵達</div>
+            <div class="time">17:44 日光</div>
+            <div class="airport">SPACIA X 12 號</div>
           </div>
         </div>
         <div style="font-size:0.8rem; color:#888; margin-top:10px;">
-          *新型旗艦特急列車，全車指定席，出發前確認車廂與座位號碼。
-        </div>
-      </div>
-
-      <!-- 日光特急 回程 -->
-      <div class="card train-card">
-        <div class="transport-header">
-          <span class="flight-no" style="color:var(--primary);">東武 SPACIA X 12 號</span>
-          <span style="font-size:0.85rem; color:#6e6b66;">2/26 (五)</span>
-        </div>
-        <div class="flight-route">
-          <div class="flight-node">
-            <div class="time">17:44</div>
-            <div class="airport">東武日光站 出發</div>
-          </div>
-          <div class="flight-arrow">
-            <span>1h 51m</span>
-            <i data-lucide="arrow-right"></i>
-          </div>
-          <div class="flight-node">
-            <div class="time">19:35</div>
-            <div class="airport">淺草站 抵達</div>
-          </div>
-        </div>
-        <div style="font-size:0.8rem; color:#888; margin-top:10px;">
-          *返回淺草後，可直接安排雷門周邊宵夜或居酒屋。
+          *09:39 抵達東武日光；回程 19:35 返抵淺草站。
         </div>
       </div>
     </div>
@@ -532,18 +549,18 @@
       <i data-lucide="calendar"></i> 每日詳細行程表
     </div>
 
-    <!-- Day Buttons -->
+    <!-- 優化後好滑動的 Day Buttons -->
     <div class="day-selector" id="dayTabs">
-      <div class="day-pill active" onclick="switchDay(1)">D1 2/20 出發・抵達萬座</div>
-      <div class="day-pill" onclick="switchDay(2)">D2 2/21 滑雪 Day 1</div>
-      <div class="day-pill" onclick="switchDay(3)">D3 2/22 滑雪 Day 2</div>
-      <div class="day-pill" onclick="switchDay(4)">D4 2/23 滑雪 Day 3</div>
-      <div class="day-pill" onclick="switchDay(5)">D5 2/24 草津名湯</div>
-      <div class="day-pill" onclick="switchDay(6)">D6 2/25 前往淺草</div>
+      <div class="day-pill active" onclick="switchDay(1)">D1 2/20 出發・萬座</div>
+      <div class="day-pill" onclick="switchDay(2)">D2 2/21 滑雪 1</div>
+      <div class="day-pill" onclick="switchDay(3)">D3 2/22 滑雪 2</div>
+      <div class="day-pill" onclick="switchDay(4)">D4 2/23 滑雪 3</div>
+      <div class="day-pill" onclick="switchDay(5)">D5 2/24 草津溫泉</div>
+      <div class="day-pill" onclick="switchDay(6)">D6 2/25 淺草散策</div>
       <div class="day-pill" onclick="switchDay(7)">D7 2/26 日光東照宮</div>
-      <div class="day-pill" onclick="switchDay(8)">D8 2/27 水戶梅花 / 鎌倉</div>
+      <div class="day-pill" onclick="switchDay(8)">D8 2/27 水戶/鎌倉</div>
       <div class="day-pill" onclick="switchDay(9)">D9 2/28 麻布台之丘</div>
-      <div class="day-pill" onclick="switchDay(10)">D10 3/1 平安返台</div>
+      <div class="day-pill" onclick="switchDay(10)">D10 3/1 機場返台</div>
     </div>
 
     <div class="card">
@@ -557,6 +574,15 @@
       <i data-lucide="map-pin"></i> 必去與推薦景點官方網站
     </div>
     <div class="spot-grid">
+      <div class="spot-card">
+        <div>
+          <span class="spot-tag">千年古剎</span>
+          <div class="spot-name">成田山新勝寺</div>
+          <div class="spot-desc">擁有一千多年歷史的關東名剎，供奉不動明王。江戶風情表參道林立著老字號鰻魚店與土產店。</div>
+        </div>
+        <a class="spot-link-btn" href="https://www.naritasan.or.jp/" target="_blank">新勝寺官方網站 <i data-lucide="external-link" size="14"></i></a>
+      </div>
+
       <div class="spot-card">
         <div>
           <span class="spot-tag">必去名湯</span>
@@ -595,15 +621,6 @@
 
       <div class="spot-card">
         <div>
-          <span class="spot-tag">古都湘南備選</span>
-          <div class="spot-name">鎌倉大佛 & 江之島</div>
-          <div class="spot-desc">若花況不佳可切換為湘南一日遊：長谷寺、鎌倉高德院大佛、搭江之電飽覽相模灣富士山景。</div>
-        </div>
-        <a class="spot-link-btn" href="https://www.kotoku-in.jp/" target="_blank">高德院大佛官網 <i data-lucide="external-link" size="14"></i></a>
-      </div>
-
-      <div class="spot-card">
-        <div>
           <span class="spot-tag">現代新地標</span>
           <div class="spot-name">麻布台之丘 (Azabudai Hills)</div>
           <div class="spot-desc">日本最高摩天大樓，匯集了奢華綠意花園、頂級精品以及知名燒肉店 YORONIKU TOKYO。</div>
@@ -617,6 +634,24 @@
       <i data-lucide="utensils"></i> 美食與特色小食清單
     </div>
     <div class="spot-grid">
+      <div class="spot-card">
+        <div>
+          <span class="spot-tag" style="background:#fde8e8; color:var(--primary);">成田百年老店</span>
+          <div class="spot-name">川豐 鰻魚飯本店 (Kawatoyo)</div>
+          <div class="spot-desc">成田山表參道最具代表性的百年鰻魚名店！現殺現烤、肉質鬆軟細緻，秘傳百年醬汁香氣四溢。</div>
+        </div>
+        <a class="spot-link-btn" href="http://www.unagi-kawatoyo.com/" target="_blank">川豐本店官網 <i data-lucide="external-link" size="14"></i></a>
+      </div>
+
+      <div class="spot-card">
+        <div>
+          <span class="spot-tag">成田人氣小點</span>
+          <div class="spot-name">成田夢牧場 (薬師堂前店)</div>
+          <div class="spot-desc">表參道必吃散步甜點！以新鮮生乳製作的高人氣香濃牛奶霜淇淋、香醇優酪乳與起司點心。</div>
+        </div>
+        <a class="spot-link-btn" href="https://www.yumebokujo.com/" target="_blank">成田夢牧場官網 <i data-lucide="external-link" size="14"></i></a>
+      </div>
+
       <div class="spot-card">
         <div>
           <span class="spot-tag" style="background:#fde8e8; color:var(--primary);">東京重磅燒肉</span>
@@ -652,24 +687,6 @@
         </div>
         <a class="spot-link-btn" href="https://www.murasaki-imo.com/" target="_blank">あさひ 本店官網 <i data-lucide="external-link" size="14"></i></a>
       </div>
-
-      <div class="spot-card">
-        <div>
-          <span class="spot-tag">日光在地名產</span>
-          <div class="spot-name">日光湯波（豆皮）料理</div>
-          <div class="spot-desc">日光必吃傳統名物，無論是油炸湯波饅頭、湯波蕎麥麵或精緻豆皮懷石料理都極具代表性。</div>
-        </div>
-        <span style="font-size:0.8rem; color:#888;">推薦：東照宮表參道周邊名店「補妥洛（補陀落）」或「日光ゆば亭」</span>
-      </div>
-
-      <div class="spot-card">
-        <div>
-          <span class="spot-tag">草津街頭小吃</span>
-          <div class="spot-name">溫泉饅頭 & 現烤岩魚</div>
-          <div class="spot-desc">漫步西之河原通，品嚐熱騰騰的現蒸紅豆溫泉饅頭與圍爐炭火鹽烤岩魚，暖胃又應景。</div>
-        </div>
-        <span style="font-size:0.8rem; color:#888;">推薦：本家ちちや（雙色內餡饅頭）、鮎燒処</span>
-      </div>
     </div>
 
   </div>
@@ -689,15 +706,17 @@
     const itinerary = {
       1: [
         { time: "06:55", title: "搭乘 IT280 起飛", desc: "高雄/桃園搭乘早班機前往成田機場 (11:10 抵達第二航廈)。" },
-        { time: "11:30 - 13:00", title: "成田機場集合入境 & 午餐小歇", desc: "領取行李、申報入境手續，於成田機場美食街簡餐或超商採購備用零食。" },
-        { time: "13:30", title: "滑雪中毒者專車接駁出發", desc: "搭乘配合專車直接自機場啟程，沿關越道開往群馬萬座高原。" },
-        { time: "18:00", title: "抵達萬座王子大飯店 & 辦理入住", desc: "領取雪具確認方案、享用飯店晚餐，泡著名的混浴/男女露天星空溫泉解疲勞。" }
+        { time: "11:10 - 12:30", title: "入境領行李 & 機場寄放行李", desc: "通關入境，將滑雪大件裝備與主要行李寄放在機場置物櫃或行李寄存處。" },
+        { time: "12:40 - 16:45", title: "成田市區深度半日遊 (新勝寺表參道)", desc: "搭電車（JR/京成線約 10 分鐘）至成田站：<br>• 正餐：造訪百年老店「川豐 本店 (Kawatoyo)」享用炭火現烤蒲燒鰻魚飯<br>• 小食：漫步表參道品嚐「成田夢牧場 藥師堂前店」超濃郁牛奶霜淇淋<br>• 參拜：漫步擁有千餘年歷史的成田山新勝寺、祈求旅程平安。" },
+        { time: "17:00", title: "返回成田機場集合取行李", desc: "搭電車返回成田機場，取回寄放大行李，於「滑雪中毒者」指定集合處會合。" },
+        { time: "17:50", title: "成田機場接駁專車準時發車", desc: "搭乘滑雪中毒者專車直達群馬縣萬座王子飯店，車程約 4~4.5 小時。" },
+        { time: "約 22:30", title: "抵達萬座王子大飯店 & 入住", desc: "辦理入住，領取雪票裝備確認，享受標高 1,800m 絕景雪見溫泉解除舟車勞頓。" }
       ],
       2: [
         { time: "08:30", title: "全日滑雪活動（Day 1）", desc: "在萬座溫泉滑雪場享受標高 1,800 公尺優質超細粉雪，體驗本州最輕柔的雪質。" },
         { time: "12:00", title: "雪場午餐", desc: "在雪道旁餐廳享用熱騰騰的咖哩豬排飯或拉麵。" },
         { time: "16:30", title: "滑雪結束 & 溫泉時光", desc: "回房休息，享受標高千米無邊際雪見露天風呂。" },
-        { time: "18:30", title: "飯店會席料理 / 自助晚餐", desc: "享用在地群馬新鮮食材料理。" }
+        { time: "18:30", title: "飯店晚餐", desc: "享用在地群馬新鮮食材料理。" }
       ],
       3: [
         { time: "08:30", title: "全日滑雪活動（Day 2）", desc: "挑戰更進階的雪道或由教練指導技巧，飽覽淺間山白雪皚皚壯景。" },
@@ -709,11 +728,11 @@
       ],
       5: [
         { time: "10:00", title: "退房出發前往草津溫泉", desc: "搭乘接駁車或路線巴士前往草津溫泉街，先至「ホテル櫻井」寄放大行李。" },
-        { time: "12:00", title: "草津溫泉街散策 & 美食巡禮", desc: "探訪熱乃湯「湯揉表演」、欣賞湯畑翻騰白霧，品嘗本家ちちや溫泉饅頭與烤魚。" },
+        { time: "12:00", title: "草津溫泉街散策 & 美食巡禮", desc: "探訪熱乃湯「湯揉表演」、欣賞湯畑翻騰白霧，品嘗本家ちちや雙色溫泉饅頭與炭火烤香魚。" },
         { time: "16:00", title: "入住 ホテル櫻井", desc: "享受草津最大 30 米大浴場與萬代礦源泉洗禮，晚間觀賞館內名物湯揉太鼓祭典。" }
       ],
       6: [
-        { time: "09:30", title: "草津溫泉退房 → 出發前往東京", desc: "搭乘 JR 特急草津四萬號或巴士抵達上野/淺草。" },
+        { time: "09:30", title: "草津溫泉退房 → 出發前往東京", desc: "搭乘 JR 特急草津四萬號或長途巴士直奔東京/上野/淺草。" },
         { time: "14:30", title: "抵達淺草 Check-in", desc: "入住「Dormy Inn EXPRESS 淺草」，放妥行李輕裝出行。" },
         { time: "16:00", title: "淺草寺雷門散步 & 晴空塔夜景", desc: "穿過仲見世通造訪淺草寺，傍晚漫步隅田川畔遠眺晴空塔。" },
         { time: "21:30", title: "Dormy Inn 免費拉麵宵夜", desc: "回飯店享用經典夜鳴拉麵與頂樓景觀溫泉。" }
@@ -756,7 +775,11 @@
 
     function switchDay(dayNum) {
       document.querySelectorAll('.day-pill').forEach((pill, idx) => {
-        pill.classList.toggle('active', idx + 1 === dayNum);
+        const isActive = idx + 1 === dayNum;
+        pill.classList.toggle('active', isActive);
+        if (isActive) {
+          pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
       });
       renderDay(dayNum);
     }
